@@ -86,7 +86,7 @@ const renderModal = function(target, data){
   } else if (target === tabelModalKerja) {
     updateAttacher("kerja", tabel.barangModalKerja, target);
   } else if (target === tabelModalGaji) {
-    updateAttacher("gaji", tabel.barangModalGaji, target);
+    updateAttacher("gaji", tabel.barangModalGaji, target);  // bug?
   }
 }  
 
