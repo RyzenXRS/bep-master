@@ -1,10 +1,11 @@
 const tabelModalTetap = $("#tabel-modal-tetap");
 const tabelModalKerja = $("#tabel-modal-kerja");
-const tabelModalGaji = $("tabel-modal-gaji")
+const tabelModalGaji = $("#tabel-modal-gaji");
 
 let tabel = {
   barangModalTetap: [],
   barangModalKerja: [],
+  barangModalGaji: [],
   laba: 0,
   jumlahProduk: 0,
   biayaPenyusutan: function () {
@@ -20,6 +21,13 @@ let tabel = {
   totalKerja: function () {
     let container = 0;
     this.barangModalKerja.forEach(item => {
+      container += item.total();
+    });
+    return container;
+  },
+  totalGaji: function () {
+    let container = 0;
+    this.barangModalGaji.forEach(item => {
       container += item.total();
     });
     return container;
@@ -73,12 +81,14 @@ const renderModal = function(target, data){
     tambahBarang(index, target, data, type);
   });
   
-  if (target == tabelModalTetap) {
+  if (target === tabelModalTetap) {
     updateAttacher("tetap", tabel.barangModalTetap, target);
-  } else {
+  } else if (target === tabelModalKerja) {
     updateAttacher("kerja", tabel.barangModalKerja, target);
+  } else if (target === tabelModalGaji) {
+    updateAttacher("gaji", tabel.barangModalGaji, target);
   }
-}
+}  
 
 const pushBarang = function(data) {
   data.push({ 
@@ -103,7 +113,7 @@ $("#tambah-barang-kerja").addEventListener('click', () => {
 });
 $("#tambah-barang-gaji").addEventListener('click', () => {
   pushBarang(tabel.barangModalGaji);
-  $$("#nama-gaji")[ $$("#nama-gaji").length - 1].focus();
+  $$("#nama-gaji")[ $$("#nama-gaji").length - 1];
 });
 
 
@@ -146,7 +156,7 @@ const updatePenyusutan = function () {
 const updateKeseluruhan = function () {
   $("#penyusutan-keseluruhan").innerHTML = Math.ceil(tabel.biayaPenyusutanTahunan() / 1000) * 1000;
   $("#kerja-keseluruhan").innerHTML = tabel.totalKerja();
-  $("#biaya-keseluruhan").innerHTML = tabel.biayaKeseluruhan();
+  $("#biaya-keseluruhan").innerHTML = tabel.biayaKeseluruhan(); 
 }
 
 const updatePerencanaan = function () {
