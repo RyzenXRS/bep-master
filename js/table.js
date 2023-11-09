@@ -27,22 +27,22 @@ let tabel = {
   },
   totalGaji: function () {
     let container = 0;
-    this.barangModalGaji.forEach(item => {
+    this.barangModalGaji.forEach (item => {
       container += item.total();
     });
     return container;
   },
   biayaPenyusutanTahunan: function () {
-    return Math.ceil(this.biayaPenyusutan() / 365)
+    return Math.ceil(this.biayaPenyusutan() / 30)
   },
   biayaKeseluruhan: function () {
     return (Math.ceil(this.biayaPenyusutanTahunan() / 1000) * 1000) + this.totalKerja();
   },
   hargaJualPokok: function () {
-    return (this.biayaKeseluruhan()/Number(this.jumlahProduk)) + (this.biayaKeseluruhan()/Number(this.jumlahProduk)*(Number(this.laba) / 100));
+    return (this.biayaKeseluruhan() / Number(this.jumlahProduk)) + (this.biayaKeseluruhan() / Number(this.jumlahProduk) * (Number(this.laba) / 100));
   },
   labaBruto: function () {
-    return (Math.ceil(tabel.hargaJualPokok()/ 1000) * 1000) * this.jumlahProduk;
+    return (Math.ceil(tabel.hargaJualPokok() / 1000) * 1000) * this.jumlahProduk;
   },
   labaNetto: function () {
     return this.labaBruto() - this.biayaKeseluruhan();
@@ -72,23 +72,30 @@ const tambahBarang = function (index, target, data, type) {
   target.appendChild(tr);
 }
 
-const renderModal = function(target, data){
+const renderModal = function(target, data) {
   target.innerHTML = "";
-  let type = ""
-  if (data == tabel.barangModalTetap) {type = "tetap"}
-  else {type = "kerja"}
+  let type = "";
+
+  if (data === tabel.barangModalTetap) {
+    type = "tetap";
+  } else if (data === tabel.barangModalKerja) {
+    type = "kerja";
+  } else if (data === tabel.barangModalGaji) {
+    type = "gaji";
+  }
+
   data.forEach((barang, index) => {
     tambahBarang(index, target, data, type);
   });
-  
+
   if (target === tabelModalTetap) {
     updateAttacher("tetap", tabel.barangModalTetap, target);
   } else if (target === tabelModalKerja) {
     updateAttacher("kerja", tabel.barangModalKerja, target);
   } else if (target === tabelModalGaji) {
-    updateAttacher("gaji", tabel.barangModalGaji, target);  // bug?
+    updateAttacher("gaji", tabel.barangModalGaji, target);
   }
-}  
+}
 
 const pushBarang = function(data) {
   data.push({ 
@@ -98,10 +105,15 @@ const pushBarang = function(data) {
     total: function () {
       return Number(this.hargaBarang) * Number(this.frekuensi);
     }
-  })
-  if (data == tabel.barangModalTetap) {renderModal(tabelModalTetap, data);}
-  else {renderModal(tabelModalKerja, data)}
-}
+  });
+  if (data === tabel.barangModalTetap) {
+    renderModal(tabelModalTetap, data);
+  } else if (data === tabel.barangModalKerja) {
+    renderModal(tabelModalKerja, data);
+  } else if (data === tabel.barangModalGaji) {
+    renderModal(tabelModalGaji, data); // Changed from renderGaji to renderModal
+  }
+};
 
 $("#tambah-barang-tetap").addEventListener('click', () => {
   pushBarang(tabel.barangModalTetap);
@@ -113,7 +125,7 @@ $("#tambah-barang-kerja").addEventListener('click', () => {
 });
 $("#tambah-barang-gaji").addEventListener('click', () => {
   pushBarang(tabel.barangModalGaji);
-  $$("#nama-gaji")[ $$("#nama-gaji").length - 1];
+  $$("#nama-gaji")[ $$("#nama-gaji").length - 1].focus();
 });
 
 
