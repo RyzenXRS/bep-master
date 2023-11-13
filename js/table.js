@@ -36,7 +36,7 @@ let tabel = {
     return Math.ceil(this.biayaPenyusutan() / 30)
   },
   biayaKeseluruhan: function () {
-    return (Math.ceil(this.biayaPenyusutanTahunan() / 1000) * 1000) + this.totalKerja();
+    return (Math.ceil(this.biayaPenyusutanTahunan() / 1000) * 1000) + this.totalKerja() + this.totalGaji();
   },
   hargaJualPokok: function () {
     return (this.biayaKeseluruhan() / Number(this.jumlahProduk)) + (this.biayaKeseluruhan() / Number(this.jumlahProduk) * (Number(this.laba) / 100));
