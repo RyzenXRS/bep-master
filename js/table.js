@@ -137,12 +137,20 @@ function updateBaris(index, data, target) {
   data[index].hargaBarang = $$(`#harga-${target}`)[index].value;
   data[index].frekuensi = $$(`#frekuensi-${target}`)[index].value;
   $$(`#total-baris-${target}`)[index].innerHTML = `Rp ${data[index].total()},00`;
-  $(`#total-${target}`).innerHTML = `Total Biaya: Rp ${data == tabel.barangModalTetap ? tabel.totalTetap() : tabel.totalKerja()},00`;
+  
+  const totalBiaya = (data === tabel.barangModalTetap) ? tabel.totalTetap() :
+                    (data === tabel.barangModalKerja) ? tabel.totalKerja() :
+                    (data === tabel.barangModalGaji) ? tabel.totalGaji() :
+                    0;  // Default to 0 if data type is unknown
+
+  $(`#total-${target}`).innerHTML = `Total Biaya: Rp ${totalBiaya},00`;
+  
   updatePenyusutan();
   updateKeseluruhan();
   updatePerencanaan();
   updateLaba();
 }
+
 
 const updateAttacher = function (target, data, table) {
   $$(`#nama-${target}`).forEach((item, index) => {
