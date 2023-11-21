@@ -41,6 +41,9 @@ let tabel = {
   hargaJualPokok: function () {
     return (this.biayaKeseluruhan() / Number(this.jumlahProduk)) + (this.biayaKeseluruhan() / Number(this.jumlahProduk) * (Number(this.laba) / 100));
   },
+  biayaGajiKaryawan: function () {
+    return this.totalGaji();
+  },
   labaBruto: function () {
     return (Math.ceil(tabel.hargaJualPokok() / 1000) * 1000) * this.jumlahProduk;
   },
@@ -169,6 +172,7 @@ const updateKeseluruhan = function () {
   $("#penyusutan-keseluruhan").innerHTML = Math.ceil(tabel.biayaPenyusutanTahunan() / 1000) * 1000;
   $("#kerja-keseluruhan").innerHTML = tabel.totalKerja();
   $("#biaya-keseluruhan").innerHTML = tabel.biayaKeseluruhan(); 
+  $("#gaji-karyawan").innerHTML = tabel.biayaGajiKaryawan();
 }
 
 const updatePerencanaan = function () {
